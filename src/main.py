@@ -1,8 +1,15 @@
 from time import sleep
+from arguments import setArguments
+from log import checkCsvFile
 
 
 def main():
-    start(3600, False)
+    args = setArguments().parse_args()
+    if args.log:
+        print("log has been turned on for this session")
+        start(args.time, True)
+        return
+    start(args.time, False)
 
 
 def start(time, log):
