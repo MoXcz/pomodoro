@@ -10,6 +10,9 @@ def main():
         start(args.time, True)
         return
     start(args.time, False)
+    if args.file:
+        checkCsvFile(args.file)
+        args.file.close()
 
 
 def start(time, log):
