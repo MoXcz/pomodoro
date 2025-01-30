@@ -12,5 +12,5 @@ def setArguments():
     parser.add_argument(
         "-l", "--log", help="set to to turn on log", action="store_true"
     )
-    parser.add_argument("--file", type=argparse.FileType("w"))
+    parser.add_argument("--file", type=argparse.FileType("w"), default="sessions.csv")
     return parser
