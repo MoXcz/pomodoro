@@ -7,15 +7,16 @@ def main():
     args = setArguments().parse_args()
     if args.log:
         print("log has been turned on for this session")
-        start(args.time, True)
+        start_timer(args.work, True)
         return
-    start(args.time, False)
+    start_timer(args.work, False)
     if args.file:
         checkCsvFile(args.file)
         args.file.close()
 
 
-def start(time, log):
+def start_timer(time, log):
+    time *= 60
     for i in range(time + 60):
         sleep(1)
         if i % 60 == 0 and log is True:
