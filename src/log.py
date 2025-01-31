@@ -10,6 +10,6 @@ def checkCsvFile(file):
 
 def csvParser(filename):
     if not filename:
-        raise FileExistsError("The file could not be opened")
+        raise FileNotFoundError("The file could not be opened")
     csv_writer = csv.writer(filename)
     csv_writer.writerow(["Name", "Age"])
