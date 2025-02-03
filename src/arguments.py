@@ -1,12 +1,15 @@
 import argparse
+from config import configuration_from_ini
+import log
 
-from config import getConfig
+file = open("config.ini", "r")
+config = configuration_from_ini(file.read())
 
+params = config.params
 
-opts = getConfig()
-WORK_TIME = opts["work_time"]
-LOG = opts["log"]
-BREAK_TIME = opts["break_time"]
+WORK_TIME = params["work"]
+BREAK_TIME = params["break"]
+LOG = params["log"]
 
 
 def setArguments():
@@ -33,4 +36,10 @@ def setArguments():
         "-l", "--log", help="set to to turn on log", action="store_true"
     )
     parser.add_argument("--file", type=argparse.FileType("w"), default="sessions.csv")
+    print(
+        f"Arguments were added correctly with default values: \nwork: {WORK_TIME}\nbreak: {BREAK_TIME}\nlog: {LOG}"
+    )
     return parser
+
+
+file.close()

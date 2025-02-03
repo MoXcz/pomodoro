@@ -1,17 +1,30 @@
-import subprocess
+import os
+import configparser
+
+dir = os.path.dirname(__file__)
 
 
-def getConfig():
-    opts = {}
-    options = (
-        subprocess.run(["lua", "./lua/parse.lua"], stdout=subprocess.PIPE)
-        .stdout.decode("utf-8")
-        .strip()
-        .split("\n")
+class Configuration:
+    def __init__(self, input_dir, output_dir, params) -> None:
+        self.input_dir = input_dir
+        self.output_dir = output_dir
+        self.params = params
+
+
+def configuration_from_dict(details):
+    files = Configuration(
+        details["files"]["input-dir"],
+        details["files"]["output-dir"],
+        details["arguments"],
     )
+    return files
 
-    for opt in options:
-        opt = opt.split("=")
-        opts[opt[0]] = opt[1]
 
-    return opts
+def configuration_from_ini(data):
+    parser = configparser.ConfigParser()
+    parser.read_string(data)
+    return configuration_from_dict(parser)
+
+
+file = open("config.ini", "r")
+config = configuration_from_ini(file.read())
