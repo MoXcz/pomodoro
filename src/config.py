@@ -11,9 +11,6 @@ class Configuration:
             self.set_config()
         self.config_file = ""
         self.log_file = ""
-        self.create_config_file_and_dir()
-        self.create_log_file()
-        self.populate_config_file()
 
     def create_log_file(self):
         if not self.config_dir:
@@ -38,6 +35,14 @@ class Configuration:
             open(pomodoro_config, "x")
         self.config_file = pomodoro_config
 
+    def parse_config_file(self):
+        if not self.config_file:
+            return
+        config = open(self.config_file, "r").read()
+        parser = configparser.ConfigParser()
+        parser.read_string(config)
+        return parser
+
     def populate_config_file(self):
         sensible_default = """
 [files]
@@ -54,7 +59,6 @@ log = 1
             .replace("{{ output }}", self.log_file)
             .strip()
         )
-        print(sensible_default)
         file = open(self.config_file, "w")
         file.write(sensible_default)
 
