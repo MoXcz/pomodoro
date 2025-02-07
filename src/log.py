@@ -2,16 +2,25 @@ import os
 import csv
 
 
-def checkCsvFile(file):
-    if os.stat(file.name).st_size == 0:
+def initialize_csv(filepath):
+    with open(filepath, "w", newline="") as file:
         csv_writer = csv.writer(file)
         csv_writer.writerow(["Work Time", "Break Time"])
-    else:
-        csvParser(file.name)
 
 
-def csvParser(filename):
-    if not filename:
-        raise FileNotFoundError("The file could not be opened")
-    csv_writer = csv.writer(filename)
-    csv_writer.writerow(["Name", "Age"])
+def update_csv(config):
+    params = config.parse_config_file()["arguments"]
+    filepath = config.log_file
+
+    if not os.path.exists(filepath) or os.stat(filepath).st_size == 0:
+        initialize_csv(filepath)
+        return
+
+    work_time = params["work"]
+    break_time = params["break"]
+
+    with open(filepath, "a", newline="") as file:
+        csv_writer = csv.writer(file)
+        csv_writer.writerow([work_time, break_time])
+
+    print(f"Added entry: Work Time = {work_time}, Break Time = {break_time}")
