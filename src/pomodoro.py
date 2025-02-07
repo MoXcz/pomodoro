@@ -1,6 +1,18 @@
 from time import sleep
-from arguments import setArguments
+import argparse
+from config import Configuration
 from log import checkCsvFile
+
+
+config = Configuration()
+config.create_config_file_and_dir()
+config.create_log_file()
+config.populate_config_file()
+params = config.parse_config_file()["arguments"]
+
+WORK_TIME = params["work"]
+BREAK_TIME = params["break"]
+LOG = params["log"]
 
 
 def main():
@@ -21,6 +33,36 @@ def start_timer(time, log):
         sleep(1)
         if i % 60 == 0 and log is True:
             print(i / 60)
+
+
+def setArguments():
+    parser = argparse.ArgumentParser(
+        prog="pomodoro",
+        description="Pomodoro timer for study sessions",
+        epilog="...",
+    )
+    parser.add_argument(
+        "-w",
+        "--work",
+        help="set the time for the work time in pomodoro session",
+        type=int,
+        default=WORK_TIME,
+    )
+    parser.add_argument(
+        "-b",
+        "--break",
+        help="set the time for break time in  pomodoro session",
+        type=int,
+        default=BREAK_TIME,
+    )
+    parser.add_argument(
+        "-l", "--log", help="set to to turn on log", action="store_true"
+    )
+    parser.add_argument("--file", type=argparse.FileType("w"), default="sessions.csv")
+    print(
+        f"Arguments were added correctly with default values: \nwork: {WORK_TIME}\nbreak: {BREAK_TIME}\nlog: {LOG}"
+    )
+    return parser
 
 
 if __name__ == "__main__":
