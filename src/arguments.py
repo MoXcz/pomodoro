@@ -1,6 +1,5 @@
 import argparse
 from config import configuration_from_ini
-import log
 
 file = open("config.ini", "r")
 config = configuration_from_ini(file.read())
