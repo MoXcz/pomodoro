@@ -1,14 +1,18 @@
 from time import sleep
 import argparse
 from config import Configuration
-from log import checkCsvFile
+from log import update_csv
 
 
 config = Configuration()
 config.create_config_file_and_dir()
 config.create_log_file()
 config.populate_config_file()
+
 params = config.parse_config_file()["arguments"]
+config_dir = config.config_dir
+config_file = config.config_file
+log_file = config.log_file
 
 WORK_TIME = params["work"]
 BREAK_TIME = params["break"]
@@ -16,15 +20,17 @@ LOG = params["log"]
 
 
 def main():
+    global config_file
     args = setArguments().parse_args()
+    if args.work:
+        WORK_TIME = args.work
     if args.log:
-        print("log has been turned on for this session")
-        start_timer(args.work, True)
+        print("log has been turned off for this session")
+        # start_timer(WORK_TIME, False)
         return
-    start_timer(args.work, False)
-    if args.file:
-        checkCsvFile(args.file)
-        args.file.close()
+    # start_timer(WORK_TIME, True)
+    if log_file:
+        update_csv(config)
 
 
 def start_timer(time, log):
@@ -56,7 +62,7 @@ def setArguments():
         default=BREAK_TIME,
     )
     parser.add_argument(
-        "-l", "--log", help="set to to turn on log", action="store_true"
+        "-l", "--log", help="set to to turn off log", action="store_true"
     )
     return parser
 
