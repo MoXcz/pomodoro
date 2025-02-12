@@ -5,10 +5,9 @@ import configparser
 
 
 class Configuration:
-    def __init__(self, config_dir=""):
+    def __init__(self, config_dir=".config"):
         self.config_dir = config_dir
-        if not self.config_dir:
-            self.set_config()
+        self.set_config_dir()  # set configuration inside /home/user/ (~)
         self.config_file = ""
         self.log_file = ""
 
@@ -62,10 +61,10 @@ log = 1
         file = open(self.config_file, "w")
         file.write(sensible_default)
 
-    def set_config(self):
+    def set_config_dir(self):
         home = os.path.expanduser("~")
         config_dir = os.path.expandvars("$XDG_CONFIG_HOME")
         if not config_dir:
-            config_dir = os.path.join(home, ".config")
+            config_dir = os.path.join(home, self.config_dir)
             print(f"XDG_CONFIG_HOME env var not set, default to: {config_dir}")
         self.config_dir = config_dir
