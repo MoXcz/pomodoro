@@ -69,13 +69,3 @@ log = 1
             config_dir = os.path.join(home, ".config")
             print(f"XDG_CONFIG_HOME env var not set, default to: {config_dir}")
         self.config_dir = config_dir
-
-
-# def configuration_from_dict(details):
-#     files = Configuration(
-#         details["files"]["input-dir"],
-#         details["files"]["output-dir"],
-#         details["arguments"],
-#     )
-#     return files
-
