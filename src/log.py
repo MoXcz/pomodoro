@@ -23,4 +23,6 @@ def update_csv(config):
         csv_writer = csv.writer(file)
         csv_writer.writerow([work_time, break_time])
 
-    print(f"Added entry: Work Time = {work_time}, Break Time = {break_time}")
+    print(
+        f"Added entry: Work Time = {work_time}, Break Time = {break_time} at {filepath}"
+    )
