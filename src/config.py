@@ -64,7 +64,9 @@ log = 1
     def set_config_dir(self):
         home = os.path.expanduser("~")
         config_dir = os.path.expandvars("$XDG_CONFIG_HOME")
-        if not config_dir:
+        if not config_dir or self.config_dir != ".config":
             config_dir = os.path.join(home, self.config_dir)
-            print(f"XDG_CONFIG_HOME env var not set, default to: {config_dir}")
+            print(
+                f"XDG_CONFIG_HOME env var not set or \nconfiguration directory specified, config_dir set to: {config_dir}"
+            )
         self.config_dir = config_dir
