@@ -4,24 +4,34 @@ from config import Configuration
 from log import update_csv
 
 
-config = Configuration()
-config.create_config_file_and_dir()
-config.create_log_file()
-config.populate_config_file()
-
-params = config.parse_config_file()["arguments"]
-config_dir = config.config_dir
-config_file = config.config_file
-log_file = config.log_file
-
-WORK_TIME = params["work"]
-BREAK_TIME = params["break"]
-LOG = params["log"]
+def set_parser():
+    parser = argparse.ArgumentParser(
+        prog="pomodoro",
+        description="Pomodoro timer for study sessions",
+        epilog="...",
+    )
+    parser.add_argument(
+        "-c",
+        "--config",
+        help="set the directory for configuration and log files",
+        type=str,
+        default=".config",
+    )
+    return parser
 
 
 def main():
-    global config_file
-    args = setArguments().parse_args()
+    parser = set_parser()
+    args = parser.parse_args()
+
+    if args.config:
+        config = Configuration(args.config)
+    else:
+        config = Configuration()
+
+    args = setArguments(parser, config).parse_args()
+    log_file = config.log_file
+
     if args.work:
         WORK_TIME = args.work
     if args.log:
@@ -41,12 +51,10 @@ def start_timer(time, log):
             print(i / 60)
 
 
-def setArguments():
-    parser = argparse.ArgumentParser(
-        prog="pomodoro",
-        description="Pomodoro timer for study sessions",
-        epilog="...",
-    )
+def setArguments(parser, config):
+    WORK_TIME = config.params["work"]
+    BREAK_TIME = config.params["break"]
+    # LOG = config.params["log"]
     parser.add_argument(
         "-w",
         "--work",
