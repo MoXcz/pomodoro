@@ -21,58 +21,31 @@ def set_parser():
 
 
 def main():
-    parser = set_parser()
-    args = parser.parse_args()
-
-    if args.config:
-        config = Configuration(args.config)
-    else:
-        config = Configuration()
-
-    args = setArguments(parser, config).parse_args()
-    log_file = config.log_file
-
-    if args.work:
-        WORK_TIME = args.work
-    if args.log:
-        print("log has been turned off for this session")
-        # start_timer(WORK_TIME, False)
-        return
-    # start_timer(WORK_TIME, True)
-    if log_file:
-        update_csv(config)
+    args = set_parser().parse_args()
+    config = Configuration(args.config)
+    start_timer(config)
 
 
-def start_timer(time, log):
-    time *= 60
+def start_timer(config):
+    log = config.params["log"]
+    work_time = int(config.params["work"])
+    break_time = int(config.params["break"])
+    try:
+        print(f"Timer started: {work_time} min")
+        timer(work_time * 60, log)
+        print(f"Timer complete\nBreak start: {break_time} min")
+        timer(break_time * 60, log)
+        if log:
+            update_csv(config)
+    except KeyboardInterrupt:
+        print("timer did not complete")
+
+
+def timer(time, log):
     for i in range(time + 60):
-        sleep(1)
-        if i % 60 == 0 and log is True:
+        # sleep(1)
+        if i % 60 == 0 and log:
             print(i / 60)
-
-
-def setArguments(parser, config):
-    WORK_TIME = config.params["work"]
-    BREAK_TIME = config.params["break"]
-    # LOG = config.params["log"]
-    parser.add_argument(
-        "-w",
-        "--work",
-        help="set the time for the work time in pomodoro session",
-        type=int,
-        default=WORK_TIME,
-    )
-    parser.add_argument(
-        "-b",
-        "--break",
-        help="set the time for break time in  pomodoro session",
-        type=int,
-        default=BREAK_TIME,
-    )
-    parser.add_argument(
-        "-l", "--log", help="set to to turn off log", action="store_true"
-    )
-    return parser
 
 
 if __name__ == "__main__":
