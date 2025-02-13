@@ -14,9 +14,6 @@ class Configuration:
         self.params = self.load_config()["arguments"]
 
     def initialize_configuration(self):
-        # TODO: If config_dir exists -> read from config.ini and set config_file
-        # and log_file from there
-        # Check if the configuration directory exists
         if os.path.exists(self.config_dir):
             return
 
