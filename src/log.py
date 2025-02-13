@@ -9,7 +9,7 @@ def initialize_csv(filepath):
 
 
 def update_csv(config):
-    params = config.parse_config_file()["arguments"]
+    params = config.load_config()["arguments"]
     filepath = config.log_file
 
     if not os.path.exists(filepath) or os.stat(filepath).st_size == 0:
