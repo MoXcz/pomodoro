@@ -8,7 +8,7 @@ def set_parser():
     parser = argparse.ArgumentParser(
         prog="pomodoro",
         description="Pomodoro timer for study sessions",
-        epilog="...",
+        epilog="A configuration directory is necessary for the command to work",
     )
     parser.add_argument(
         "-c",

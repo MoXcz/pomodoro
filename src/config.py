@@ -2,8 +2,6 @@ import os
 import configparser
 
 
-
-
 class Configuration:
     def __init__(self, config_dir=".config"):
         self.config_dir = config_dir
